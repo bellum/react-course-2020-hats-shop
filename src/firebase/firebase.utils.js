@@ -26,4 +26,31 @@ provider.setCustomParameters({
 });
 export const signInWithGoogle = () => auth.signInWithPopup(provider);
 
+export const createUserProfileDocument = async (user, additionalData) => {
+    if (!user) {
+        return;
+    }
+    // query reference does not contain any data but rather points to the place inside the database
+    const userRef = firestore.doc(`users/${user.uid}`);
+    const userSnapshot = await userRef.get();
+
+    if (userSnapshot.exists) {
+        return userRef;
+    }
+
+    const {displayName, email} = user;
+    const createdAt = new Date();
+    try {
+        await userRef.set({
+            displayName,
+            email,
+            createdAt,
+            ...additionalData,
+        })
+    } catch (err) {
+        console.error('Exception happened on creating new user:', err.message);
+    }
+    return userRef;
+};
+
 export default firebase;
