@@ -2,6 +2,11 @@ import {createSelector} from 'reselect';
 
 const selectCart = state => state.cart;
 
+export const selectIsDropdownHidden = createSelector(
+    [selectCart],
+    cart => cart.isDropdownHidden,
+);
+
 export const selectCartItems = createSelector(
     [selectCart],
     cart => cart.cartItems,
