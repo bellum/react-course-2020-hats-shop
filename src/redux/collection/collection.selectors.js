@@ -7,6 +7,11 @@ export const selectCollectionItems = createSelector(
     collections => collections.items,
 );
 
+export const selectCollectionItemsForPreview = createSelector(
+    [selectCollectionItems],
+    collection_items => Object.keys(collection_items).map(key => collection_items[key]),
+);
+
 export const selectCollection = collectionUrlParam => createSelector(
     [selectCollectionItems],
     collection_items => collection_items[collectionUrlParam],
